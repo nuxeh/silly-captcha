@@ -7,3 +7,4 @@ edition = "2018"
 [dependencies]
 font8x8 = "0.2.5"
 image = "0.22.4"
+noise = "0.6.0"
