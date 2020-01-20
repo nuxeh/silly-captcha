@@ -1,0 +1,9 @@
+[package]
+name = "silly-captcha"
+version = "0.1.0"
+authors = ["Ed Cragg <drq.11235@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+font8x8 = "0.2.5"
+image = "0.22.4"
