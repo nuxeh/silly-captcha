@@ -1,6 +1,8 @@
 extern crate font8x8;
 extern crate image;
 
+mod text;
+
 /// Struct used to configure and build a SillyCaptcha
 #[derive(Clone)]
 struct SillyCaptcha {
