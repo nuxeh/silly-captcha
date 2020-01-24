@@ -4,32 +4,30 @@ use std::error::Error;
 
 pub struct Character {
     bytes: [u8; 8],
-    pixels: Vec<u8>,
+    image: GrayImage,
 }
 
 impl Character {
     pub fn new(c: char) -> Result<Self, Box<dyn Error>> {
+        let mut raw_image = vec![];
 
-        if let Some(bytes) = get_char_bytes(c) {
-            let res = Self {
-                bytes,
-                pixels: vec![],
-            };
-            Ok(res)
+        let bytes = if let Some(bytes) = get_char_bytes(c) {
+            bytes
         } else {
-            Err(format!("invalid character '{}' requested", c).into())
-        }
+            return Err(format!("invalid character '{}' requested", c).into());
+        };
+
+        bytes
+            .iter()
+            .for_each(|b| raw_image.extend(byte_to_vec(*b)));
+
+        let image = GrayImage::from_raw(8, 8, raw_image).unwrap();
+
+        Ok(Self {bytes, image})
     }
 
-    pub fn get_image(&self) -> GrayImage {
-        let mut res = vec![];
-
-        self.bytes
-            .iter()
-            .for_each(|b| res.extend(byte_to_vec(*b)));
-
-        println!("{:?}", res);
-        GrayImage::from_raw(8, 8, res).unwrap()
+    pub fn get_image(&mut self) -> &GrayImage {
+        &self.image
     }
 }
 
