@@ -8,6 +8,7 @@ struct SillyCaptcha {
     height: usize,
     padding: usize,
     num_chars: usize,
+    text: String,
     data: Vec<u8>,
 }
 
@@ -18,6 +19,7 @@ impl Default for SillyCaptcha {
             height: 50,
             padding: 5,
             num_chars: 4,
+            text: "".into(),
             data: vec![],
         }
     }
@@ -50,6 +52,15 @@ impl SillyCaptcha {
     /// Set the num_chars of the generated captcha image.
     fn num_chars(&mut self, num_chars: usize) -> &mut Self {
         self.num_chars =  num_chars;
+        self
+    }
+
+    /// Set the text to display (don't auto-generate)
+    fn text<S>(&mut self, text: &S) -> &mut Self
+    where
+        S: ToString,
+    {
+        self.text = text.to_string();
         self
     }
 
