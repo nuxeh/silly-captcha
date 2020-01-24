@@ -1,10 +1,36 @@
 use font8x8::unicode::{BasicFonts, UnicodeFonts};
-use image::GrayImage;
+use image::{ImageBuffer,GrayImage};
+use std::error::Error;
 
-pub fn get_char_image(c: char) {
-    let font = BasicFonts::new();
-    let bytes = font.get(c);
-    println!("{:?}", bytes);
+pub struct Character {
+    bytes: [u8; 8],
+    pixels: Vec<u8>,
+}
+
+impl Character {
+    pub fn new(c: char) -> Result<Self, Box<dyn Error>> {
+
+        if let Some(bytes) = get_char_bytes(c) {
+            let res = Self {
+                bytes,
+                pixels: vec![],
+            };
+            Ok(res)
+        } else {
+            Err(format!("invalid character '{}' requested", c).into())
+        }
+    }
+
+    pub fn get_image(&self) -> GrayImage {
+        let mut res = vec![];
+
+        self.bytes
+            .iter()
+            .for_each(|b| res.extend(byte_to_vec(*b)));
+
+        println!("{:?}", res);
+        GrayImage::from_raw(8, 8, res).unwrap()
+    }
 }
 
 fn get_char_bytes(c: char) -> Option<[u8; 8]> {
@@ -30,8 +56,8 @@ mod tests {
 
     #[test]
     fn test_get_char_image() {
-        get_char_image('C');
-        panic!("oh noes");
+        let c = Character::new('C');
+        c.unwrap().get_image().save("/tmp/s.pgm");
     }
 
     #[test]
