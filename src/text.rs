@@ -1,5 +1,5 @@
 use font8x8::unicode::{BasicFonts, UnicodeFonts};
-use image::{ImageBuffer,GrayImage};
+use image::{ImageBuffer, GrayImage, FilterType, DynamicImage};
 use std::error::Error;
 
 pub struct Character {
@@ -54,8 +54,10 @@ mod tests {
 
     #[test]
     fn test_get_char_image() {
-        let c = Character::new('C');
-        c.unwrap().get_image().save("/tmp/s.pgm");
+        let mut c = Character::new('C').unwrap();
+        let i = c.get_image();//.resize(240, 240, FilterType::Nearest).save("/tmp/s.pgm");
+        let d = DynamicImage::ImageLuma8(i.clone());
+        d.resize(240, 240, FilterType::Nearest).save("/tmp/sb.png");
     }
 
     #[test]
