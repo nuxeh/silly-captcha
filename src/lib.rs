@@ -68,4 +68,8 @@ impl SillyCaptcha {
     fn build(&mut self) -> Self {
         self.clone()
     }
+
+    fn as_byte_slice(&self) -> &[u8] {
+        self.data.as_slice()
+    }
 }
