@@ -7,6 +7,11 @@ pub fn get_char_image(c: char) {
     println!("{:?}", bytes);
 }
 
+fn get_char_bytes(c: char) -> Option<[u8; 8]> {
+    let font = BasicFonts::new();
+    font.get(c)
+}
+
 fn byte_to_vec(b: u8) -> Vec<u8> {
     let mut res = vec![];
     for i in 0..8 {
@@ -27,6 +32,11 @@ mod tests {
     fn test_get_char_image() {
         get_char_image('C');
         panic!("oh noes");
+    }
+
+    #[test]
+    fn test_get_char_bytes() {
+        assert_eq!(get_char_bytes('C'), Some([60, 102, 3, 3, 3, 102, 60, 0]));
     }
 
     #[test]
