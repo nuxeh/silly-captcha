@@ -54,10 +54,10 @@ mod tests {
 
     #[test]
     fn test_get_char_image() {
-        let mut c = Character::new('C').unwrap();
-        let i = c.get_image();//.resize(240, 240, FilterType::Nearest).save("/tmp/s.pgm");
+        let mut c = Character::new('9').unwrap();
+        let i = c.get_image();
         let d = DynamicImage::ImageLuma8(i.clone());
-        d.resize(240, 240, FilterType::Nearest).save("/tmp/sb.png");
+        d.resize(40, 40, FilterType::Nearest).blur(2.0).save("/tmp/sb.png");
     }
 
     #[test]
