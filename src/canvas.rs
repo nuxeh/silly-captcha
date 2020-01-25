@@ -5,6 +5,7 @@ pub struct Canvas {
     pad: usize,
     width: usize,
     height: usize,
+    text: String,
     char_height: usize,
 }
 
@@ -18,6 +19,14 @@ impl Canvas {
 
     pub fn pad(&mut self, pad: usize) -> &mut Self {
         self.pad = pad;
+        self
+    }
+
+    pub fn text<S>(&mut self, text: S) -> &mut Self
+    where
+        S: ToString,
+    {
+        self.text = text.to_string();
         self
     }
 
