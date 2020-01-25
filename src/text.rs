@@ -58,6 +58,9 @@ mod tests {
         let i = c.get_image();
         let d = DynamicImage::ImageLuma8(i.clone());
         d.resize(40, 40, FilterType::Nearest).blur(2.0).save("/tmp/sb.png");
+        let mut blank = DynamicImage::new_luma8(240, 240);
+        blank.invert();
+        blank.save("/tmp/blank.png");
     }
 
     #[test]
