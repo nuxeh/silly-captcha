@@ -62,7 +62,7 @@ mod tests {
     #[test]
     fn test_get_char_image() {
         let mut c = Character::new('9').unwrap();
-        let i = c.get_image();
+        let i = c.get_image_buffer();
         let d = DynamicImage::ImageLuma8(i.clone());
         d.resize(40, 40, FilterType::Nearest).blur(2.0).save("/tmp/sb.png");
     }

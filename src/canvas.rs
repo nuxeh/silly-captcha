@@ -44,9 +44,13 @@ impl Canvas {
     pub fn generate_image(&self) -> GrayImage {
         let w = self.width as u32;
         let h = self.height as u32;
+
+        // make a white coloured base image of the correct dimensions
         let mut canv = DynamicImage::new_luma8(w, h);
         canv.invert();
+
         self.overlay_text(&mut canv);
+
         canv.to_luma()
     }
 
