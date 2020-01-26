@@ -9,6 +9,7 @@ pub struct Canvas {
     height: usize,
     text: String,
     char_height: usize,
+    px_height: usize,
     blur: Option<f32>,
 }
 
@@ -42,7 +43,8 @@ impl Canvas {
     }
 
     pub fn build(&mut self) -> Self {
-        self.char_height = self.height - (self.pad * 2);
+        self.px_height = self.height / (7 + (2 * self.pad));
+        self.char_height = self.px_height * 8;
         self.width = (self.pad * 2) + (self.char_height * self.text.len());
         self.clone()
     }
@@ -67,17 +69,21 @@ impl Canvas {
     }
 
     fn overlay_text(&self, image: &mut DynamicImage) {
+        let start = self.pad * self.px_height;
         self.text
             .chars()
             .enumerate()
             .for_each(|(i, v)| {
-                let x = self.pad + (self.char_height * i);
+                let x = start + (self.char_height * i);
                 self.overlay_character(image, v, x, self.pad)
             });
     }
 
     fn overlay_character(&self, image: &mut DynamicImage, c: char, x: usize, y: usize) {
         let glyph = Character::new(c).unwrap().generate_image(self.char_height);
+        if c == 'l' {
+            glyph.save("/tmp/glyph.png");
+        }
         overlay(image, &glyph, x as u32, y as u32);
     }
 }
@@ -89,7 +95,7 @@ mod tests {
 
     #[test]
     fn test_dimensions() {
-        let c = Canvas::new(100, "ads123dahj31kjdha")
+        let c = Canvas::new(100, "ads123dahj31kjdhagq")
             .pad(20)
             .blur(5.0)
             .build();
