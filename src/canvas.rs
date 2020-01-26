@@ -34,7 +34,9 @@ impl Canvas {
         self.char_height = self.height - (self.pad * 2);
     }
 
-    pub fn get_image() -> GrayImage {
-        GrayImage::new(1, 1)
+    pub fn get_image(&self) -> GrayImage {
+        let mut blank = DynamicImage::new_luma8(self.width as u32, self.height as u32);
+        blank.invert();
+        blank.to_luma()
     }
 }
