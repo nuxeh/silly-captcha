@@ -26,8 +26,15 @@ impl Character {
         Ok(Self {bytes, image})
     }
 
-    pub fn get_image(&mut self) -> &GrayImage {
+    pub fn get_image_buffer(&self) -> &GrayImage {
         &self.image
+    }
+
+    pub fn generate_image(&self, height: usize) -> DynamicImage {
+        let h = height as u32;
+        let d = DynamicImage::ImageLuma8(self.image.clone());
+        d.resize(h, h, FilterType::Nearest);
+        d
     }
 }
 
