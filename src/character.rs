@@ -30,6 +30,12 @@ impl Character {
         &self.image
     }
 
+// move occurs because `self.image` has type `image::ImageBuffer<image::Luma<u8>,
+// std::vec::Vec<u8>>`, hhich does not implement the `Copy` trait
+//    pub fn as_image(&self) -> DynamicImage {
+//        DynamicImage::ImageLuma8(self.image)
+//    }
+
     pub fn generate_image(&self, height: usize) -> DynamicImage {
         let h = height as u32;
         let d = DynamicImage::ImageLuma8(self.image.clone())
