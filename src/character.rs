@@ -36,6 +36,10 @@ impl Character {
 //        DynamicImage::ImageLuma8(self.image)
 //    }
 
+    pub fn get_image(&self) -> DynamicImage {
+        DynamicImage::ImageLuma8(self.image.clone())
+    }
+
     pub fn generate_image(&self, height: usize) -> DynamicImage {
         let h = height as u32;
         let d = DynamicImage::ImageLuma8(self.image.clone())

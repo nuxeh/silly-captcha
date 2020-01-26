@@ -1,4 +1,5 @@
 use image::{ImageBuffer, GrayImage, FilterType, DynamicImage, imageops::overlay};
+use std::convert::TryInto;
 
 use crate::character::Character;
 
@@ -7,9 +8,8 @@ pub struct Canvas {
     pad: usize,
     width: usize,
     height: usize,
+    native_width: usize,
     text: String,
-    char_height: usize,
-    px_height: usize,
     blur: Option<f32>,
 }
 
@@ -43,15 +43,15 @@ impl Canvas {
     }
 
     pub fn build(&mut self) -> Self {
-        self.px_height = self.height / (7 + (2 * self.pad));
-        self.char_height = self.px_height * 8;
-        self.width = (self.pad * 2) + (self.char_height * self.text.len());
         self.clone()
     }
 
     pub fn generate_image(&self) -> GrayImage {
-        let w = self.width as u32;
-        let h = self.height as u32;
+        let w = (self.text.len() * 8) + (2 * self.pad);
+        let h = 7 + (2 * self.pad);
+
+        let w = w.try_into().unwrap();
+        let h = h.try_into().unwrap();
 
         // make a white coloured base image of the correct dimensions
         let mut canv = DynamicImage::new_luma8(w, h);
@@ -65,25 +65,22 @@ impl Canvas {
             canv
         };
 
+        let canv = canv.resize(1000 as u32, self.height as u32, FilterType::Nearest);
         canv.to_luma()
     }
 
     fn overlay_text(&self, image: &mut DynamicImage) {
-        let start = self.pad * self.px_height;
         self.text
             .chars()
             .enumerate()
             .for_each(|(i, v)| {
-                let x = start + (self.char_height * i);
+                let x = self.pad + (8 * i);
                 self.overlay_character(image, v, x, self.pad)
             });
     }
 
     fn overlay_character(&self, image: &mut DynamicImage, c: char, x: usize, y: usize) {
-        let glyph = Character::new(c).unwrap().generate_image(self.char_height);
-        if c == 'l' {
-            glyph.save("/tmp/glyph.png");
-        }
+        let glyph = Character::new(c).unwrap().get_image();
         overlay(image, &glyph, x as u32, y as u32);
     }
 }
@@ -96,8 +93,9 @@ mod tests {
     #[test]
     fn test_dimensions() {
         let c = Canvas::new(100, "ads123dahj31kjdhagq")
-            .pad(20)
-            .blur(5.0)
+            .pad(1)
+            .blur(0.1)
+            //.blur(5.0)
             .build();
         c.generate_image().save("/tmp/cheese.pgm");
         //assert!(false);
