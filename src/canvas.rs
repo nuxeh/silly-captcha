@@ -12,10 +12,13 @@ pub struct Canvas {
 }
 
 impl Canvas {
-    pub fn new(w: usize, h: usize) -> Self {
+    pub fn new<S>(h: usize, text: S) -> Self
+    where
+        S: ToString,
+    {
         let mut new = Self::default();
-        new.width = w;
         new.height = h;
+        new.text = text.to_string();
         new
     }
 
@@ -34,14 +37,22 @@ impl Canvas {
 
     pub fn build(&mut self) {
         self.char_height = self.height - (self.pad * 2);
+        self.width = (self.pad * 2) + (self.char_height * self.text.len());
     }
 
     pub fn generate_image(&self) -> GrayImage {
         let w = self.width as u32;
         let h = self.height as u32;
-        let mut blank = DynamicImage::new_luma8(w, h);
-        blank.invert();
-        blank.to_luma()
+        let mut canv = DynamicImage::new_luma8(w, h);
+        canv.invert();
+        canv.to_luma()
+    }
+
+    fn overlay_text(&mut self) {
+        self.text
+            .chars()
+            .enumerate()
+            .for_each(|(i, v)| println!(""));
     }
 }
 
