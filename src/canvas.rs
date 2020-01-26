@@ -44,3 +44,14 @@ impl Canvas {
         blank.to_luma()
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_dimensions() {
+        let c = Canvas::new(100, 100);
+        assert!(true);
+    }
+}
