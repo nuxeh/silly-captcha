@@ -1,5 +1,7 @@
 use image::{ImageBuffer, GrayImage, FilterType, DynamicImage};
 
+use crate::character;
+
 #[derive(Default)]
 pub struct Canvas {
     pad: usize,
@@ -34,8 +36,10 @@ impl Canvas {
         self.char_height = self.height - (self.pad * 2);
     }
 
-    pub fn get_image(&self) -> GrayImage {
-        let mut blank = DynamicImage::new_luma8(self.width as u32, self.height as u32);
+    pub fn generate_image(&self) -> GrayImage {
+        let w = self.width as u32;
+        let h = self.height as u32;
+        let mut blank = DynamicImage::new_luma8(w, h);
         blank.invert();
         blank.to_luma()
     }
