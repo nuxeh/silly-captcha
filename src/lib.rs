@@ -75,4 +75,8 @@ impl SillyCaptcha {
     fn as_byte_slice(&self) -> &[u8] {
         self.data.as_slice()
     }
+
+//    fn as_generic_image(&self) -> GenericImage {
+//
+//    }
 }
