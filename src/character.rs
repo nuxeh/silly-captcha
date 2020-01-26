@@ -32,8 +32,8 @@ impl Character {
 
     pub fn generate_image(&self, height: usize) -> DynamicImage {
         let h = height as u32;
-        let d = DynamicImage::ImageLuma8(self.image.clone());
-        d.resize(h, h, FilterType::Nearest);
+        let d = DynamicImage::ImageLuma8(self.image.clone())
+            .resize_exact(h, h, FilterType::Nearest);
         d
     }
 }

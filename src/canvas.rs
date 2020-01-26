@@ -77,7 +77,9 @@ mod tests {
 
     #[test]
     fn test_dimensions() {
-        let c = Canvas::new(100, "hello").build();
+        let c = Canvas::new(100, "hello")
+            .pad(10)
+            .build();
         c.generate_image().save("/tmp/cheese.pgm");
         assert!(false);
     }
