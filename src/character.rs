@@ -19,10 +19,9 @@ impl Character {
 
         bytes
             .iter()
-            .take(7)
             .for_each(|b| raw_image.extend(byte_to_vec(*b)));
 
-        let image = GrayImage::from_raw(8, 7, raw_image).unwrap();
+        let image = GrayImage::from_raw(8, 8, raw_image).unwrap();
 
         Ok(Self {bytes, image})
     }
