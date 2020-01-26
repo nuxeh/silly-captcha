@@ -9,6 +9,7 @@ pub struct Canvas {
     height: usize,
     text: String,
     char_height: usize,
+    blur: Option<f32>,
 }
 
 impl Canvas {
@@ -24,6 +25,11 @@ impl Canvas {
 
     pub fn pad(&mut self, pad: usize) -> &mut Self {
         self.pad = pad;
+        self
+    }
+
+    pub fn blur(&mut self, sigma: f32) -> &mut Self {
+        self.blur = Some(sigma);
         self
     }
 
@@ -51,6 +57,12 @@ impl Canvas {
 
         self.overlay_text(&mut canv);
 
+        let canv = if let Some(sigma) = self.blur {
+            canv.blur(sigma)
+        } else {
+            canv
+        };
+
         canv.to_luma()
     }
 
@@ -77,10 +89,11 @@ mod tests {
 
     #[test]
     fn test_dimensions() {
-        let c = Canvas::new(100, "hello")
-            .pad(10)
+        let c = Canvas::new(100, "ads123dahj31kjdha")
+            .pad(20)
+            .blur(5.0)
             .build();
         c.generate_image().save("/tmp/cheese.pgm");
-        assert!(false);
+        //assert!(false);
     }
 }
