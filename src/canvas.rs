@@ -157,13 +157,29 @@ mod tests {
             .for_each(|(mut a, b)| {
                 let Luma(cur) = a;
                 //let blended = cur[0] ^ b;
-                let blended: i16 = cur[0] as i16 - b as i16;
-                let blended = blended.abs() as u8;
+
+                //let blended: i16 = cur[0] as i16 - b as i16;
+                //let blended = blended.abs() as u8;
+
+                let blended = if b > cur[0] && b <= 235 {
+                    b + 10
+                } else if b >= 20 {
+                    b - 10
+                } else {
+                    0
+                };
+
+                let blended = if blended > 255 {
+                    255
+                } else {
+                    blended
+                };
+
                 *a = Luma([blended]);
             });
 
         blended.save("/tmp/bl.png");
-        assert!(false);
+        //assert!(false);
     }
 
     #[test]
