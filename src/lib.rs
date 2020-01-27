@@ -12,7 +12,7 @@ struct Captcha {
     height: usize,
     padding: usize,
     num_chars: usize,
-    text: String,
+    text: Option<String>,
     data: Vec<u8>,
 }
 
@@ -23,7 +23,7 @@ impl Default for Captcha {
             height: 50,
             padding: 5,
             num_chars: 4,
-            text: "".into(),
+            text: None,
             data: vec![],
         }
     }
@@ -59,12 +59,24 @@ impl Captcha {
         self
     }
 
+    /// Generate a random string of specified length.
+    fn random(&mut self, length: u8) {
+
+    }
+
+    /// Use random dictionary entries
+    ///
+    /// Requires Unix, and a dictionary file to be available on the system.
+    fn dict(&mut self, num_words: u8) {
+
+    }
+
     /// Set the text to display (don't auto-generate)
     fn text<S>(&mut self, text: &S) -> &mut Self
     where
         S: ToString,
     {
-        self.text = text.to_string();
+        self.text = Some(text.to_string());
         self
     }
 
