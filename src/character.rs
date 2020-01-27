@@ -1,5 +1,5 @@
 use font8x8::unicode::{BasicFonts, UnicodeFonts};
-use image::{ImageBuffer, GrayImage, FilterType, DynamicImage};
+use image::{GrayImage, FilterType, DynamicImage};
 use std::error::Error;
 
 pub struct Character {

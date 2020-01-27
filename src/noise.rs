@@ -3,7 +3,6 @@ extern crate noise;
 use noise::Seedable;
 use noise::{Blend, Fbm, Perlin, RidgedMulti};
 use noise::utils::{NoiseMap, NoiseMapBuilder, PlaneMapBuilder};
-use image::{ImageBuffer, GrayImage, FilterType, DynamicImage};
 use rand::random;
 
 pub struct Noise {

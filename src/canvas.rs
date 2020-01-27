@@ -1,8 +1,7 @@
-use image::{Pixel, Luma, ImageBuffer, GrayImage, FilterType, DynamicImage, imageops::overlay};
+use image::{GrayImage, FilterType, DynamicImage, imageops::overlay};
 use std::convert::TryInto;
 
 use crate::character::Character;
-use crate::noise::Noise;
 
 #[derive(Clone)]
 enum BlendType {
