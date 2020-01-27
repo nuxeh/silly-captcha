@@ -111,7 +111,7 @@ mod tests {
 
     #[test]
     fn blend() {
-        let canvas = Canvas::new(1000, "ads123dahj31kjdhagq")
+        let canvas = Canvas::new(100, "ads123dahj31kjdhagq")
             .pad(20)
             .build();
 
@@ -133,7 +133,7 @@ mod tests {
 
     #[test]
     fn test_dimensions() {
-        let c = Canvas::new(1000, "ads123dahj31kjdhagq")
+        let c = Canvas::new(100, "ads123dahj31kjdhagq")
             .pad(2)
             .blur(0.1)
             //.blur(5.0)
