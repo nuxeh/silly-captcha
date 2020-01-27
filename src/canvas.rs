@@ -2,6 +2,7 @@ use image::{ImageBuffer, GrayImage, FilterType, DynamicImage, imageops::overlay}
 use std::convert::TryInto;
 
 use crate::character::Character;
+use crate::noise::Noise;
 
 #[derive(Clone, Default)]
 pub struct Canvas {
@@ -43,15 +44,14 @@ impl Canvas {
     }
 
     pub fn build(&mut self) -> Self {
+        self.width = (self.text.len() * 8) + (2 * self.pad);
+        self.height = 7 + (2 * self.pad);
         self.clone()
     }
 
     pub fn generate_image(&self) -> GrayImage {
-        let w = (self.text.len() * 8) + (2 * self.pad);
-        let h = 7 + (2 * self.pad);
-
-        let w = w.try_into().unwrap();
-        let h = h.try_into().unwrap();
+        let w = self.width.try_into().unwrap();
+        let h = self.height.try_into().unwrap();
 
         // make a white coloured base image of the correct dimensions
         let mut canv = DynamicImage::new_luma8(w, h);
@@ -91,9 +91,18 @@ mod tests {
     use super::*;
 
     #[test]
+    fn blend() {
+        let c = Canvas::new(100, "ads123dahj31kjdhagq")
+            .pad(2)
+            .build();
+
+        let n = Noise::new(c.width, c.height).generate();
+    }
+
+    #[test]
     fn test_dimensions() {
         let c = Canvas::new(100, "ads123dahj31kjdhagq")
-            .pad(1)
+            .pad(2)
             .blur(0.1)
             //.blur(5.0)
             .build();

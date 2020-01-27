@@ -3,6 +3,7 @@ extern crate image;
 
 mod canvas;
 mod character;
+mod noise;
 
 /// Struct used to configure and build a SillyCaptcha
 #[derive(Clone)]
