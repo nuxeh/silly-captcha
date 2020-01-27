@@ -50,10 +50,9 @@ impl Iterator for Noise {
             self.y += 1;
         }
 
-        self.x += 1;
-
-        let val = self.map.get_value(self.x, self.y);
         if self.y < self.height && self.x < self.width {
+            let val = self.map.get_value(self.x, self.y);
+            self.x += 1;
             Some((clamp(val * 0.5 + 0.5, 0.0, 1.0) * 255.0) as u8)
         } else {
             None
