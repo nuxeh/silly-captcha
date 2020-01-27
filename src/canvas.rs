@@ -140,7 +140,7 @@ mod tests {
             .pixels_mut()
             .zip(n)
             .for_each(|(mut a, b)| {
-                let Luma(cur) = a.to_owned();
+                let Luma(cur) = a;
                 //let blended = cur[0] ^ b;
                 let blended: i16 = cur[0] as i16 - b as i16;
                 let blended = blended.abs() as u8;
