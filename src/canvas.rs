@@ -5,6 +5,18 @@ use crate::character::Character;
 use crate::noise::Noise;
 
 #[derive(Clone)]
+enum BlendType {
+    Xor,
+    Difference,
+}
+
+impl Default for BlendType {
+    fn default() -> Self {
+        Self::Xor
+    }
+}
+
+#[derive(Clone)]
 pub struct Canvas {
     text: String,
     pad: usize,
@@ -12,6 +24,7 @@ pub struct Canvas {
     native_size: (usize, usize),
     width: Option<usize>,
     blur: Option<f32>,
+    blend_type: BlendType,
 }
 
 impl Default for Canvas {
