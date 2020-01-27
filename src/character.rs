@@ -3,7 +3,6 @@ use image::{GrayImage, FilterType, DynamicImage};
 use std::error::Error;
 
 pub struct Character {
-    bytes: [u8; 8],
     image: GrayImage,
 }
 
@@ -23,7 +22,7 @@ impl Character {
 
         let image = GrayImage::from_raw(8, 8, raw_image).unwrap();
 
-        Ok(Self {bytes, image})
+        Ok(Self {image})
     }
 
     pub fn get_image_buffer(&self) -> &GrayImage {
