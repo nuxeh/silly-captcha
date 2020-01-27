@@ -6,11 +6,11 @@ use crate::noise::Noise;
 
 #[derive(Clone, Default)]
 pub struct Canvas {
-    pad: usize,
-    width: usize,
-    height: usize,
-    native_width: usize,
     text: String,
+    pad: usize,
+    height: usize,
+    native_size: (usize, usize),
+    width: Option<usize>,
     blur: Option<f32>,
 }
 
@@ -35,6 +35,11 @@ impl Canvas {
         self
     }
 
+    pub fn width(&mut self, width: usize) -> &mut Self {
+        self.width = Some(width);
+        self
+    }
+
     pub fn text<S>(&mut self, text: S) -> &mut Self
     where
         S: ToString,
@@ -44,14 +49,25 @@ impl Canvas {
     }
 
     pub fn build(&mut self) -> Self {
-        self.width = (self.text.len() * 8) + (2 * self.pad);
-        self.height = 7 + (2 * self.pad);
+        let w = (self.text.len() * 8) + (2 * self.pad);
+        let h = 7 + (2 * self.pad);
+        self.native_size = (w, h);
         self.clone()
     }
 
+    pub fn get_width(&self) -> usize {
+        let (w, h) = self.native_size;
+
+        self.width.unwrap_or_else(|| {
+            (w / h) * self.height
+        })
+    }
+
     pub fn generate_image(&self) -> GrayImage {
-        let w = self.width.try_into().unwrap();
-        let h = self.height.try_into().unwrap();
+        let (w, h) = self.native_size;
+
+        let w = w.try_into().unwrap();
+        let h = h.try_into().unwrap();
 
         // make a white coloured base image of the correct dimensions
         let mut canv = DynamicImage::new_luma8(w, h);
@@ -65,7 +81,10 @@ impl Canvas {
             canv
         };
 
-        let canv = canv.resize(1000 as u32, self.height as u32, FilterType::Nearest);
+        let w = self.get_width().try_into().unwrap();
+        let h = self.height.try_into().unwrap();
+
+        let canv = canv.resize_exact(w, h, FilterType::Nearest);
         canv.to_luma()
     }
 
@@ -92,32 +111,35 @@ mod tests {
 
     #[test]
     fn blend() {
-        let c = Canvas::new(100, "ads123dahj31kjdhagq")
-            .pad(2)
+        let canvas = Canvas::new(1000, "ads123dahj31kjdhagq")
+            .pad(20)
             .build();
 
-        let mut n = Noise::new(c.width, c.height);
+        let mut n = Noise::new(canvas.get_width(), canvas.height);
         n.generate();
 
-        let res = c
-            .generate_image()
-            .pixels()
+        let mut blended = canvas.generate_image();
+
+        blended
+            .pixels_mut()
             .zip(n)
-            .map(|(a, b)| {
+            .map(|(&mut a, b)| {
                 a.map(|v| v ^ b)
             });
 
+        blended.save("/tmp/bl.png");
         assert!(false);
     }
 
     #[test]
     fn test_dimensions() {
-        let c = Canvas::new(100, "ads123dahj31kjdhagq")
+        let c = Canvas::new(1000, "ads123dahj31kjdhagq")
             .pad(2)
             .blur(0.1)
             //.blur(5.0)
             .build();
-        c.generate_image().save("/tmp/cheese.pgm");
-        //assert!(false);
+        let img = c.generate_image();
+        img.save("/tmp/cheese.pgm");
+        assert_eq!(img.height(), 1000);
     }
 }
