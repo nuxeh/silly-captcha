@@ -96,7 +96,15 @@ mod tests {
             .pad(2)
             .build();
 
-        let n = Noise::new(c.width, c.height).generate();
+        let mut n = Noise::new(c.width, c.height);
+        n.generate();
+
+        c.generate_image()
+            .pixels()
+            .zip(n)
+            .for_each(|(a, b)| println!("{:?} {:?}", a, b));
+
+        assert!(false);
     }
 
     #[test]
