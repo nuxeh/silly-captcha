@@ -79,9 +79,6 @@ mod tests {
     fn test_iterator() {
         let mut n = Noise::new(10, 10);
         n.generate();
-        for i in n {
-            println!("{}", i);
-        }
-        assert!(false);
+        assert_eq!(n.count(), 100);
     }
 }
