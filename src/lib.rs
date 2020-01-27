@@ -5,9 +5,9 @@ pub mod canvas;
 pub mod character;
 pub mod noise;
 
-/// Struct used to configure and build a SillyCaptcha
+/// Struct used to configure and build a Captcha
 #[derive(Clone)]
-struct SillyCaptcha {
+struct Captcha {
     width: usize,
     height: usize,
     padding: usize,
@@ -16,7 +16,7 @@ struct SillyCaptcha {
     data: Vec<u8>,
 }
 
-impl Default for SillyCaptcha {
+impl Default for Captcha {
     fn default() -> Self {
         Self {
             width: 100,
@@ -29,8 +29,8 @@ impl Default for SillyCaptcha {
     }
 }
 
-impl SillyCaptcha {
-    /// Obtain an uninitialized SillyCaptcha
+impl Captcha {
+    /// Obtain an uninitialized Captcha
     fn new() -> Self {
         Self::default()
     }
@@ -68,7 +68,7 @@ impl SillyCaptcha {
         self
     }
 
-    /// Initialise the SillyCaptcha struct
+    /// Initialise the Captcha struct
     fn build(&mut self) -> Self {
         self.clone()
     }
