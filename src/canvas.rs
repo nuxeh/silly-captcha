@@ -4,7 +4,7 @@ use std::convert::TryInto;
 use crate::character::Character;
 use crate::noise::Noise;
 
-#[derive(Clone, Default)]
+#[derive(Clone)]
 pub struct Canvas {
     text: String,
     pad: usize,
@@ -12,6 +12,20 @@ pub struct Canvas {
     native_size: (usize, usize),
     width: Option<usize>,
     blur: Option<f32>,
+}
+
+impl Default for Canvas {
+    fn default() -> Self {
+        Self {
+            text: "".to_string(),
+            pad: 3,
+            height: 100,
+            native_size: (0, 0),
+            width: None,
+            blur: Some(0.0),
+            blend_type: BlendType::default(),
+        }
+    }
 }
 
 impl Canvas {
