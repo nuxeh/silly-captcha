@@ -1,4 +1,4 @@
-use image::{Pixel, ImageBuffer, GrayImage, FilterType, DynamicImage, imageops::overlay};
+use image::{Pixel, Luma, ImageBuffer, GrayImage, FilterType, DynamicImage, imageops::overlay};
 use std::convert::TryInto;
 
 use crate::character::Character;
@@ -113,8 +113,8 @@ mod tests {
     #[test]
     fn blend() {
         let canvas = Canvas::new(100, "ads123dahj31kjdhagq")
-            .pad(10)
-            .blur(2.0)
+            .pad(4)
+//            .blur(2.0)
             .build();
 
         let mut n = Noise::new(canvas.get_width(), canvas.height);
@@ -125,8 +125,10 @@ mod tests {
         blended
             .pixels_mut()
             .zip(n)
-            .map(|(&mut a, b)| {
-                a.map(|v| v ^ b)
+            .for_each(|(mut a, b)| {
+                let Luma(cur) = a.to_owned();
+                let blended = cur[0] ^ b;
+                *a = Luma([blended]);
             });
 
         blended.save("/tmp/bl.png");
