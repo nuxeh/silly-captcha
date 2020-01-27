@@ -34,7 +34,7 @@ impl Default for Canvas {
             height: 100,
             native_size: (0, 0),
             width: None,
-            blur: Some(0.0),
+            blur: None,
             blend_type: BlendType::default(),
         }
     }
