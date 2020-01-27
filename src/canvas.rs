@@ -171,10 +171,11 @@ mod tests {
         let c = Canvas::new(100, "ads123dahj31kjdhagq")
             .pad(2)
             .blur(0.1)
-            //.blur(5.0)
             .build();
         let img = c.generate_image();
         img.save("/tmp/cheese.pgm");
-        assert_eq!(img.height(), 1000);
+        assert_eq!(img.height(), 100);
+        assert_eq!(img.width(), c.get_width() as u32);
+        assert_eq!(img.width(), 1400);
     }
 }
