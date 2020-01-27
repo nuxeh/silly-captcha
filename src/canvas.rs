@@ -135,6 +135,9 @@ impl Canvas {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use image::{Luma};
+
+    use crate::noise::Noise;
 
     #[test]
     fn blend() {
