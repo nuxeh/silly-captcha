@@ -75,16 +75,17 @@ impl Canvas {
 
         self.overlay_text(&mut canv);
 
+        let w = self.get_width().try_into().unwrap();
+        let h = self.height.try_into().unwrap();
+
+        let canv = canv.resize_exact(w, h, FilterType::Nearest);
+
         let canv = if let Some(sigma) = self.blur {
             canv.blur(sigma)
         } else {
             canv
         };
 
-        let w = self.get_width().try_into().unwrap();
-        let h = self.height.try_into().unwrap();
-
-        let canv = canv.resize_exact(w, h, FilterType::Nearest);
         canv.to_luma()
     }
 
@@ -112,7 +113,8 @@ mod tests {
     #[test]
     fn blend() {
         let canvas = Canvas::new(100, "ads123dahj31kjdhagq")
-            .pad(20)
+            .pad(10)
+            .blur(2.0)
             .build();
 
         let mut n = Noise::new(canvas.get_width(), canvas.height);
