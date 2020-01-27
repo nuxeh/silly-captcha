@@ -1,4 +1,4 @@
-use image::{ImageBuffer, GrayImage, FilterType, DynamicImage, imageops::overlay};
+use image::{Pixel, ImageBuffer, GrayImage, FilterType, DynamicImage, imageops::overlay};
 use std::convert::TryInto;
 
 use crate::character::Character;
@@ -99,10 +99,13 @@ mod tests {
         let mut n = Noise::new(c.width, c.height);
         n.generate();
 
-        c.generate_image()
+        let res = c
+            .generate_image()
             .pixels()
             .zip(n)
-            .for_each(|(a, b)| println!("{:?} {:?}", a, b));
+            .map(|(a, b)| {
+                a.map(|v| v ^ b)
+            });
 
         assert!(false);
     }
