@@ -113,7 +113,7 @@ mod tests {
     #[test]
     fn blend() {
         let canvas = Canvas::new(100, "ads123dahj31kjdhagq")
-            .pad(4)
+            .pad(3)
 //            .blur(2.0)
             .build();
 
@@ -127,7 +127,9 @@ mod tests {
             .zip(n)
             .for_each(|(mut a, b)| {
                 let Luma(cur) = a.to_owned();
-                let blended = cur[0] ^ b;
+                //let blended = cur[0] ^ b;
+                let blended: i16 = cur[0] as i16 - b as i16;
+                let blended = blended.abs() as u8;
                 *a = Luma([blended]);
             });
 
